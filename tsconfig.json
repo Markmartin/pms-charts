@@ -21,7 +21,8 @@
       "dom"
     ],
     "paths": {
-      "@/*": ["src/app/*"] 
+      "@/*": ["src/app/*"],
+      "@assets/*":["src/assets/*"] 
     }
   },
   "angularCompilerOptions": {

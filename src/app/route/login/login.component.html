@@ -1,1 +1,35 @@
-<p>login works!</p>
+<div class="login">
+  <img class="login-back" src="/assets/app/login.png" />
+
+  <div class="login-layer"></div>
+
+  <div class="login-view">
+    <div class="login-title">PMS - 数据可视化</div>
+
+    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>用户名 / UserName</mat-label>
+        <input matInput formControlName="userName" />
+        <mat-error *ngif="form.controls.userName.invalid">
+          {{ getErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>密码 / Password</mat-label>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          formControlName="password"
+        />
+        <button mat-icon-button matSuffix (click)="toggleHide()">
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button class="submit" mat-raised-button color="primary" type="submit">
+        Primary
+      </button>
+    </form>
+  </div>
+</div>
