@@ -1,0 +1,55 @@
+$arrow-color: #888;
+
+.charts {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  .header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .left-arrow {
+      position: relative;
+      width: 10px;
+      height: 10px;
+      border-left: 2px solid $arrow-color;
+      border-bottom: 2px solid $arrow-color;
+      transform: rotate(45deg);
+    }
+
+    .date {
+      padding: 0 10px;
+      line-height: 40px;
+      color: #666;
+    }
+
+    .right-arrow {
+      position: relative;
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid $arrow-color;
+      border-bottom: 2px solid $arrow-color;
+      transform: rotate(-45deg);
+    }
+  }
+
+  .charts-container {
+    position: relative;
+    top: 40px;
+    width: 100%;
+    overflow-y: scroll;
+    min-height: 100%;
+    height: auto;
+
+    .charts-sales {
+      width: 90vw;
+      height: 90vw;
+      margin: 0 auto;
+    }
+  }
+}

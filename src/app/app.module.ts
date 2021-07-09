@@ -1,22 +1,34 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+// http module
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+// http interceptor
+import { UniversalInterceptor } from './service/interceptors/universal-interceptor';
+// service worker module
+import { ServiceWorkerModule } from '@angular/service-worker';
+// browser animation
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// reactive form module
+import { ReactiveFormsModule } from '@angular/forms';
+// material ui module
+import { MaterialModule } from '@/material/material.module';
 
-import { AppRoutingModule } from './app-routing.module';
+// 路由和页面
+import { AppRoutingModule } from './route/app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './route/login/login.component';
 import { HelpComponent } from './route/help/help.component';
-
-import { ServiceWorkerModule } from '@angular/service-worker';
+// 环境变量
 import { environment } from '../environments/environment';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
 
-import { MaterialModule } from '@/material/material.module';
+// 服务
+// import { HttpService } from '@/service/http.service';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HelpComponent],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -28,7 +40,13 @@ import { MaterialModule } from '@/material/material.module';
     ReactiveFormsModule,
     MaterialModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UniversalInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

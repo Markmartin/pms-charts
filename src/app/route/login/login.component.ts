@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   AbstractControl,
   FormBuilder,
@@ -7,10 +8,15 @@ import {
   Validators,
 } from '@angular/forms';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpService } from '@/service/http.service';
+import { GlobalxService } from '@/service/global/globalx.service';
+
 function validateUserName(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const validate = control.value && control.value.length >= 6;
-    return validate ? { userName: { value: control.value } } : null;
+    const result = validate ? null : { userName: { value: control.value } };
+    return result;
   };
 }
 
@@ -22,20 +28,55 @@ function validateUserName(): ValidatorFn {
 export class LoginComponent implements OnInit {
   hide = true;
   form = this.formBuilder.group({
-    userName: ['', [Validators.required, validateUserName()]],
-    password: ['', Validators.required],
+    userName: [
+      'pms_fsaca',
+      {
+        validators: [Validators.required, validateUserName()],
+        updateOn: 'blur',
+      },
+    ],
+    password: [
+      'aiways',
+      {
+        validators: [Validators.required, validateUserName()],
+        updateOn: 'blur',
+      },
+    ],
   });
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar,
+    private httpService: HttpService,
+    private globalx: GlobalxService
+  ) {}
 
   ngOnInit(): void {}
 
-  toggleHide() {
+  toggleHide(): void {
     this.hide = !this.hide;
   }
 
-  getErrorMessage() {}
+  getErrorMessage(key: string): string {
+    return this.form.value[key] === '' ? '不能为空' : '长度不能小于6';
+  }
 
-  onSubmit() {
-    console.log('提交');
+  onSubmit(): void {
+    if (this.form.invalid) {
+      this.snackBar.open('请输入正确的登录信息', '', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: 2000,
+      });
+
+      return;
+    }
+
+    this.httpService.userApiLogin((resp) => {
+      if (resp.status) {
+        this.globalx.setUserInfo(resp.data);
+        this.router.navigate(['charts']);
+      }
+    });
   }
 }

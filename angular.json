@@ -61,6 +61,20 @@
               ],
               "outputHashing": "all"
             },
+            "stage": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.stage.ts"
+                }
+              ]
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -77,6 +91,9 @@
           "configurations": {
             "production": {
               "browserTarget": "pms-charts:build:production"
+            },
+            "stage": {
+              "browserTarget": "pms-charts:build:stage"
             },
             "development": {
               "browserTarget": "pms-charts:build:development"
