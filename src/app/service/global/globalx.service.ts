@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs';
 
-import { UserInfo } from '@/service/http.interface';
+import { UserInfo } from '@/service/request/http.interface';
 
 @Injectable({
   providedIn: 'root',

@@ -6,14 +6,14 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   CommonResponse,
   FormatResponse,
   CallbackFunc,
-} from '@/service/http.interface';
+  UserInfoReq,
+} from '@/service/request/http.interface';
 
 // 请求成功数据处理
 function formatResponse(
@@ -61,47 +61,40 @@ export class HttpService {
             | boolean
             | ReadonlyArray<string | number | boolean>;
         }
-  ): Observable<HttpResponse<CommonResponse>> {
-    return this.http
-      .request<CommonResponse>(method, `${environment.baseUrl}${url}`, {
-        body,
-        params,
-        observe: 'response',
-      })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          return throwError(error);
+  ): Observable<FormatResponse> {
+    return new Observable((subscriber) => {
+      this.http
+        .request<CommonResponse>(method, `${environment.baseUrl}${url}`, {
+          body,
+          params,
+          observe: 'response',
         })
-      );
+        .subscribe(
+          (resp: HttpResponse<CommonResponse>) => {
+            const response = formatResponse(resp);
+            if (!response.status) {
+              this.snackBar.open(response.msg, '', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                duration: 2000,
+              });
+            }
+            subscriber.next(response);
+          },
+          (error: HttpErrorResponse) => {
+            const response = formatResponseError(error);
+            this.snackBar.open(response.msg, '', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 2000,
+            });
+            subscriber.next(response);
+          }
+        );
+    });
   }
 
-  userApiLogin(cb: CallbackFunc): void {
-    const sub = this.apiInstance('post', 'com/login', {
-      userName: 'pms_fsaca',
-      password: 'aiways',
-    });
-    sub.subscribe(
-      (resp: HttpResponse<CommonResponse>) => {
-        const response = formatResponse(resp);
-        if (!response.status) {
-          this.snackBar.open(response.msg, '', {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            duration: 2000,
-          });
-        }
-
-        cb(response);
-      },
-      (error: HttpErrorResponse) => {
-        const response = formatResponseError(error);
-        this.snackBar.open(response.msg, '', {
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          duration: 2000,
-        });
-        cb(response);
-      }
-    );
+  userApiLogin(userInfoReq: UserInfoReq): Observable<FormatResponse> {
+    return this.apiInstance('post', 'com/login', userInfoReq);
   }
 }

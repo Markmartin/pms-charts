@@ -14,6 +14,11 @@ export interface CallbackFunc {
   (data: FormatResponse): void;
 }
 
+export interface UserInfoReq {
+  userName: string;
+  password: string;
+}
+
 export interface UserInfo {
   userCode: string;
   token: string;

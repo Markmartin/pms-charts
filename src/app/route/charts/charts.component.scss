@@ -46,10 +46,41 @@ $arrow-color: #888;
     min-height: 100%;
     height: auto;
 
-    .charts-sales {
-      width: 90vw;
-      height: 90vw;
-      margin: 0 auto;
+    .charts-sales-container {
+      // 销售报表
+      .charts-header {
+        padding: 10px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .label {
+          padding-left: 10px;
+          color: #666;
+          font-size: 18px;
+          font-weight: bold;
+          border-left: 5px solid #666;
+        }
+        .select-custom {
+          margin-left: 10px;
+          width: 80px;
+          height: 30px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          // height: 40px;
+        }
+      }
+      .charts-sales {
+        width: 100vw;
+        height: 100vw;
+        margin: 0 auto;
+      }
+
+      .charts-drive {
+        width: 100vw;
+        height: 100vw;
+        // height: 100vh;
+        margin: 0 auto;
+      }
     }
   }
 }

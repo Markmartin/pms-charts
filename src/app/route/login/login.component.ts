@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpService } from '@/service/http.service';
+import { HttpService } from '@/service/request/http.service';
 import { GlobalxService } from '@/service/global/globalx.service';
 
 function validateUserName(): ValidatorFn {
@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.httpService.userApiLogin((resp) => {
+    this.httpService.userApiLogin(this.form.value).subscribe((resp) => {
       if (resp.status) {
         this.globalx.setUserInfo(resp.data);
         this.router.navigate(['charts']);
