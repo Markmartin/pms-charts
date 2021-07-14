@@ -38,7 +38,7 @@ $arrow-color: #888;
     }
   }
 
-  .charts-container {
+  .charts-list {
     position: relative;
     top: 40px;
     width: 100%;
@@ -46,7 +46,7 @@ $arrow-color: #888;
     min-height: 100%;
     height: auto;
 
-    .charts-sales-container {
+    .charts-container {
       // 销售报表
       .charts-header {
         padding: 10px 0;
@@ -76,6 +76,13 @@ $arrow-color: #888;
       }
 
       .charts-drive {
+        width: 100vw;
+        height: 100vw;
+        // height: 100vh;
+        margin: 0 auto;
+      }
+
+      .charts-clue {
         width: 100vw;
         height: 100vw;
         // height: 100vh;

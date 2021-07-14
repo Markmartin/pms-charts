@@ -72,8 +72,9 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.httpService.userApiLogin(this.form.value).subscribe((resp) => {
+    this.httpService.apiUserLogin(this.form.value).subscribe((resp) => {
       if (resp.status) {
+        localStorage.setItem('token', JSON.stringify(resp.data.token));
         this.globalx.setUserInfo(resp.data);
         this.router.navigate(['charts']);
       }

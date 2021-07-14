@@ -11,9 +11,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   CommonResponse,
   FormatResponse,
-  CallbackFunc,
   UserInfoReq,
 } from '@/service/request/http.interface';
+
+import { GlobalxService } from '@/service/global/globalx.service';
 
 // 请求成功数据处理
 function formatResponse(
@@ -46,7 +47,11 @@ function formatResponseError(error: HttpErrorResponse): FormatResponse {
 })
 export class HttpService {
   baseUrl = environment.baseUrl;
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
+  constructor(
+    private http: HttpClient,
+    private globalxService: GlobalxService,
+    private snackBar: MatSnackBar
+  ) {}
 
   apiInstance(
     method: string,
@@ -94,7 +99,11 @@ export class HttpService {
     });
   }
 
-  userApiLogin(userInfoReq: UserInfoReq): Observable<FormatResponse> {
+  apiUserLogin(userInfoReq: UserInfoReq): Observable<FormatResponse> {
     return this.apiInstance('post', 'com/login', userInfoReq);
+  }
+
+  apiAreaSet(): Observable<FormatResponse> {
+    return this.apiInstance('get', 'admin/area/listByVo', null, { type: 0 });
   }
 }

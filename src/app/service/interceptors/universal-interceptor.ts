@@ -4,12 +4,11 @@ import {
   HttpInterceptor,
   HttpHandler,
   HttpRequest,
-  HttpResponse,
 } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
+import { GlobalxService } from '@/service/global/globalx.service';
 
-@Injectable()
 export class UniversalInterceptor implements HttpInterceptor {
   intercept(
     req: HttpRequest<any>,
@@ -17,7 +16,7 @@ export class UniversalInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const universalReq = req.clone({
       setHeaders: {
-        'x-access-token': 'authToken',
+        'x-access-token': localStorage.getItem('token') || '',
         roleCode: 'roleCode',
         observe: 'response',
       },

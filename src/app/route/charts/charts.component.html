@@ -1,13 +1,13 @@
 <div class="charts">
   <form class="form" [formGroup]="form">
     <div class="header">
-      <div class="left-arrow"></div>
+      <div class="left-arrow" (click)="updateDate(-1)"></div>
       <div class="date">{{ date }}</div>
-      <div class="right-arrow"></div>
+      <div class="right-arrow" (click)="updateDate(1)"></div>
     </div>
-    <div class="charts-container">
+    <div class="charts-list">
       <!-- 销售报表 -->
-      <div class="charts-sales-container" meta="销售报表">
+      <div class="charts-container" meta="销售报表">
         <div class="charts-header">
           <div class="label">销售日报</div>
           <select class="select-custom" formControlName="salesTimeSpan">
@@ -26,7 +26,7 @@
       </div>
 
       <!-- 试驾报表 -->
-      <div class="charts-sales-container" meta="试驾报表">
+      <div class="charts-container" meta="试驾报表">
         <div class="charts-header">
           <div class="label">直营店试驾排名</div>
           <select class="select-custom" formControlName="driveTimeSpan">
@@ -38,6 +38,31 @@
 
         <!-- 图表dom -->
         <div class="charts-drive" id="charts-drive"></div>
+      </div>
+
+      <!-- 线索跟进报表 -->
+      <div class="charts-container">
+        <div class="charts-header">
+          <div class="label">线索跟进</div>
+          <select class="select-custom" formControlName="clueFollowArea">
+            <option *ngFor="let option of areaOptions" [value]="option.value">
+              {{ option.viewValue }}
+            </option>
+          </select>
+        </div>
+
+        <!-- 图表dom -->
+        <div class="charts-clue" id="charts-clue-follow"></div>
+      </div>
+
+      <!-- 线索分发 -->
+      <div class="charts-container">
+        <div class="charts-header">
+          <div class="label">线索分发</div>
+        </div>
+
+        <!-- 图表dom -->
+        <div class="charts-clue" id="charts-clue-distribution"></div>
       </div>
     </div>
   </form>
