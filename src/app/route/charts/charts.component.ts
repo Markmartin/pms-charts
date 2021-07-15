@@ -15,34 +15,30 @@ import { HttpService } from '@/service/request/http.service';
 export class ChartsComponent implements OnInit {
   // 当前选择时间
   date = dayjs().format('YYYY-MM');
-  // 销售柱状图
+  // 时间跨度选项
   dateOptions = [
-    { viewValue: '年度', value: '0' },
-    { viewValue: '月度', value: '1' },
+    { viewValue: '月度', value: '0' },
+    { viewValue: '年度', value: '1' },
   ];
-  areaOptions = [
-    { viewValue: '上海区', value: '0' },
-    { viewValue: '全国', value: '1' },
-  ];
+  // 地区选项
+  areaOptions = [{ viewValue: '全国', value: '' }];
+  // 销售日报
   salesTimeSpan = '0';
   salesBarChart!: EChartsType;
   salesBarChartOption = {
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     legend: { data: ['目标', '批售', '零售'] },
-    xAxis: { type: 'category' },
+    xAxis: {
+      type: 'category',
+      axisLabel: {
+        interval: 0,
+        rotate: -30,
+      },
+    },
     yAxis: { type: 'value' },
     dataset: {
-      dimensions: ['category', 'mb', 'ps', 'ls'],
-      source: [
-        { category: '上海', mb: 43.3, ps: 85.8, ls: 93.7 },
-        { category: '北京', mb: 43.3, ps: 85.8, ls: 93.7 },
-        { category: '江苏', mb: 43.3, ps: 85.8, ls: 93.7 },
-        { category: '浙江', mb: 43.3, ps: 85.8, ls: 93.7 },
-        { category: '南京', mb: 43.3, ps: 85.8, ls: 93.7 },
-        { category: '嘉定', mb: 43.3, ps: 85.8, ls: 93.7 },
-        { category: '黄埔', mb: 43.3, ps: 85.8, ls: 93.7 },
-        { category: '杨浦', mb: 43.3, ps: 85.8, ls: 93.7 },
-      ],
+      dimensions: ['partnerName', 'targetCount', 'psCount', 'lsCount'],
+      source: [],
     },
     series: [
       { name: '目标', type: 'bar', barGap: 0 },
@@ -67,20 +63,8 @@ export class ChartsComponent implements OnInit {
     xAxis: { type: 'value' },
     yAxis: { type: 'category', inverse: true },
     dataset: {
-      dimensions: ['category', 'sj'],
-      source: [
-        { category: '上海吴越广场体验中心1', sj: 10 },
-        { category: '上海中间广场体验中心2', sj: 10 },
-        { category: '杭州湖滨银泰体验中心3', sj: 10 },
-        { category: '西安曲江星悦荟体验中心4', sj: 10 },
-        { category: '苏州龙湖狮山天街体验中心5', sj: 10 },
-        { category: '苏州龙湖狮山天街体验中心6', sj: 10 },
-        { category: '上海中间广场体验中心7', sj: 10 },
-        { category: '杭州湖滨银泰体验中心8', sj: 10 },
-        { category: '西安曲江星悦荟体验中心9', sj: 10 },
-        { category: '苏州龙湖狮山天街体验中心10', sj: 10 },
-        { category: '苏州龙湖狮山天街体验中心11', sj: 10 },
-      ],
+      dimensions: ['partnerName', 'testDriveCount'],
+      source: [],
     },
     series: [{ name: '试驾数', type: 'bar' }],
   };
@@ -92,7 +76,7 @@ export class ChartsComponent implements OnInit {
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     grid: {
       left: '3%',
-      right: '4%',
+      right: '10%',
       top: '0%',
       bottom: '3%',
       containLabel: true,
@@ -100,44 +84,8 @@ export class ChartsComponent implements OnInit {
     xAxis: { type: 'value' },
     yAxis: { type: 'category', inverse: true },
     dataset: {
-      dimensions: ['category', 'clueFollow', 'clueUnFollow'],
-      source: [
-        { category: '上海吴越广场体验中心1', clueFollow: 10, clueUnFollow: 5 },
-        { category: '上海中间广场体验中心2', clueFollow: 10, clueUnFollow: 5 },
-        { category: '杭州湖滨银泰体验中心3', clueFollow: 10, clueUnFollow: 5 },
-        {
-          category: '西安曲江星悦荟体验中心4',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-        {
-          category: '苏州龙湖狮山天街体验中心5',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-        {
-          category: '苏州龙湖狮山天街体验中心6',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-        { category: '上海中间广场体验中心7', clueFollow: 10, clueUnFollow: 5 },
-        { category: '杭州湖滨银泰体验中心8', clueFollow: 10, clueUnFollow: 5 },
-        {
-          category: '西安曲江星悦荟体验中心9',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-        {
-          category: '苏州龙湖狮山天街体验中心10',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-        {
-          category: '苏州龙湖狮山天街体验中心11',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-      ],
+      dimensions: ['partnerName', 'clueCount', 'unClueCount'],
+      source: [],
     },
     series: [
       { name: '已跟踪', type: 'bar', stack: 'total' },
@@ -149,10 +97,7 @@ export class ChartsComponent implements OnInit {
           show: true,
           position: 'right',
           formatter: (params: any) => {
-            return `${(
-              params.value.clueUnFollow /
-              (params.value.clueFollow + params.value.clueUnFollow)
-            ).toFixed(1)}%`;
+            return `${params.value.percentage}%`;
           },
         },
       },
@@ -165,7 +110,7 @@ export class ChartsComponent implements OnInit {
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     grid: {
       left: '3%',
-      right: '4%',
+      right: '10%',
       top: '0%',
       bottom: '3%',
       containLabel: true,
@@ -173,44 +118,8 @@ export class ChartsComponent implements OnInit {
     xAxis: { type: 'value' },
     yAxis: { type: 'category', inverse: true },
     dataset: {
-      dimensions: ['category', 'clueFollow', 'clueUnFollow'],
-      source: [
-        { category: '上海吴越广场体验中心1', clueFollow: 10, clueUnFollow: 5 },
-        { category: '上海中间广场体验中心2', clueFollow: 10, clueUnFollow: 5 },
-        { category: '杭州湖滨银泰体验中心3', clueFollow: 10, clueUnFollow: 5 },
-        {
-          category: '西安曲江星悦荟体验中心4',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-        {
-          category: '苏州龙湖狮山天街体验中心5',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-        {
-          category: '苏州龙湖狮山天街体验中心6',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-        { category: '上海中间广场体验中心7', clueFollow: 10, clueUnFollow: 5 },
-        { category: '杭州湖滨银泰体验中心8', clueFollow: 10, clueUnFollow: 5 },
-        {
-          category: '西安曲江星悦荟体验中心9',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-        {
-          category: '苏州龙湖狮山天街体验中心10',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-        {
-          category: '苏州龙湖狮山天街体验中心11',
-          clueFollow: 10,
-          clueUnFollow: 5,
-        },
-      ],
+      dimensions: ['partnerName', 'clueCount', 'unClueCount'],
+      source: [],
     },
     series: [
       { name: '已跟踪', type: 'bar', stack: 'total' },
@@ -222,10 +131,7 @@ export class ChartsComponent implements OnInit {
           show: true,
           position: 'right',
           formatter: (params: any) => {
-            return `${(
-              params.value.clueUnFollow /
-              (params.value.clueFollow + params.value.clueUnFollow)
-            ).toFixed(1)}%`;
+            return `${params.value.percentage}%`;
           },
         },
       },
@@ -234,9 +140,9 @@ export class ChartsComponent implements OnInit {
 
   form = this.formBuilder.group({
     salesTimeSpan: ['0'],
-    salesArea: ['0'],
+    salesArea: [''],
     driveTimeSpan: ['0'],
-    clueFollowArea: ['0'],
+    clueFollowArea: [''],
   });
 
   debounceUpdateAllCharts = _.debounce(this.updateAllCharts, 1500);
@@ -272,11 +178,24 @@ export class ChartsComponent implements OnInit {
       this.clueDistributionBarChart = echarts.init(clueDistributeDom);
       this.clueDistributionBarChart.setOption(this.clueDistributionChartOption);
     }
+
+    // 更新地区列表
+    this.updateArea();
   }
 
   updateArea() {
     this.httpService.apiAreaSet().subscribe((resp) => {
-      console.log(resp);
+      if (resp.status) {
+        const areaOptions = resp.data.map(
+          (item: { code: string; name: string }) => ({
+            value: item.code,
+            viewValue: item.name,
+          })
+        );
+        this.areaOptions.push(...areaOptions);
+
+        this.updateAllCharts();
+      }
     });
   }
 
@@ -286,8 +205,142 @@ export class ChartsComponent implements OnInit {
     this.debounceUpdateAllCharts();
   }
 
+  // 更新全部图表
   updateAllCharts() {
     console.log('更新所有的视图');
     console.log(this.date);
+    this.updateSalesChart();
+    this.updateDriveChart();
+    this.updateClueFollowChart();
+    this.updateClueDistributionChart();
+  }
+
+  // 更新销售日报
+  updateSalesChart() {
+    this.httpService
+      .apiSalesChart(
+        this.date,
+        this.form.value.salesTimeSpan,
+        this.form.value.salesArea
+      )
+      .subscribe((resp) => {
+        if (resp.status) {
+          const source = resp.data.map(
+            (item: {
+              partnerName: string;
+              targetCount: number;
+              psCount: number;
+              lsCount: number;
+            }) => ({
+              partnerName: item.partnerName,
+              targetCount: item.targetCount || 5,
+              psCount: item.psCount || 3,
+              lsCount: item.lsCount || 2,
+            })
+          );
+
+          this.salesBarChartOption = {
+            ...this.salesBarChartOption,
+            dataset: {
+              ...this.salesBarChartOption.dataset,
+              source,
+            },
+          };
+
+          this.salesBarChart.setOption(this.salesBarChartOption);
+        }
+      });
+  }
+
+  // 更新试驾排名
+  updateDriveChart() {
+    this.httpService
+      .apiDriveChart(this.date, this.form.value.driveTimeSpan)
+      .subscribe((resp) => {
+        if (resp.status) {
+          const source = resp.data.map(
+            (item: { partnerName: string; testDriveCount: number }) => ({
+              partnerName: item.partnerName,
+              testDriveCount: item.testDriveCount || 10,
+            })
+          );
+
+          this.driveBarChartoption = {
+            ...this.driveBarChartoption,
+            dataset: {
+              ...this.driveBarChartoption.dataset,
+              source,
+            },
+          };
+
+          this.driveBarChart.setOption(this.driveBarChartoption);
+        }
+      });
+  }
+
+  // 更新线索跟进
+  updateClueFollowChart() {
+    this.httpService
+      .apiClueFollowChart(this.date, this.form.value.clueFollowArea)
+      .subscribe((resp) => {
+        if (resp.status) {
+          const source = resp.data.map(
+            (item: {
+              partnerName: string;
+              clueCount: number;
+              unClueCount: number;
+              percentage: number;
+            }) => ({
+              partnerName: item.partnerName,
+              clueCount: item.clueCount || 10,
+              unClueCount: item.unClueCount || 2,
+              percentage: item.percentage || 0,
+            })
+          );
+
+          this.clueFollowBarChartOption = {
+            ...this.clueFollowBarChartOption,
+            dataset: {
+              ...this.clueFollowBarChartOption.dataset,
+              source,
+            },
+          };
+
+          this.clueFollowBarChart.setOption(this.clueFollowBarChartOption);
+        }
+      });
+  }
+
+  // 更新线索分发
+  updateClueDistributionChart() {
+    this.httpService.apiClueDistributionChart(this.date).subscribe((resp) => {
+      if (resp.status) {
+        const source = resp.data.map(
+          (item: {
+            partnerName: string;
+            clueCount: number;
+            unClueCount: number;
+            percentage: number;
+          }) => ({
+            partnerName: item.partnerName,
+            clueCount: item.clueCount || 10,
+            unClueCount: item.unClueCount || 2,
+            percentage: item.percentage || 0,
+          })
+        );
+
+        this.clueDistributionChartOption = {
+          ...this.clueDistributionChartOption,
+          dataset: {
+            ...this.clueDistributionChartOption.dataset,
+            source,
+          },
+        };
+
+        this.clueDistributionBarChart.setOption(
+          this.clueDistributionChartOption
+        );
+      }
+    });
   }
 }

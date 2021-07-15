@@ -10,12 +10,20 @@
       <div class="charts-container" meta="销售报表">
         <div class="charts-header">
           <div class="label">销售日报</div>
-          <select class="select-custom" formControlName="salesTimeSpan">
+          <select
+            class="select-custom"
+            formControlName="salesTimeSpan"
+            (ngModelChange)="updateSalesChart()"
+          >
             <option *ngFor="let option of dateOptions" [value]="option.value">
               {{ option.viewValue }}
             </option>
           </select>
-          <select class="select-custom" formControlName="salesArea">
+          <select
+            class="select-custom"
+            formControlName="salesArea"
+            (ngModelChange)="updateSalesChart()"
+          >
             <option *ngFor="let option of areaOptions" [value]="option.value">
               {{ option.viewValue }}
             </option>
@@ -29,7 +37,11 @@
       <div class="charts-container" meta="试驾报表">
         <div class="charts-header">
           <div class="label">直营店试驾排名</div>
-          <select class="select-custom" formControlName="driveTimeSpan">
+          <select
+            class="select-custom"
+            formControlName="driveTimeSpan"
+            (ngModelChange)="updateDriveChart()"
+          >
             <option *ngFor="let option of dateOptions" [value]="option.value">
               {{ option.viewValue }}
             </option>
@@ -44,7 +56,11 @@
       <div class="charts-container">
         <div class="charts-header">
           <div class="label">线索跟进</div>
-          <select class="select-custom" formControlName="clueFollowArea">
+          <select
+            class="select-custom"
+            formControlName="clueFollowArea"
+            (ngModelChange)="updateClueFollowChart()"
+          >
             <option *ngFor="let option of areaOptions" [value]="option.value">
               {{ option.viewValue }}
             </option>

@@ -24,7 +24,7 @@ function formatResponse(
     response.status === 200 && response.body?.code === 200 ? true : false;
   const msg = status
     ? 'success'
-    : response.statusText || response.body?.msg || '';
+    : response.body?.msg || response.statusText || '';
   return {
     status,
     msg,
@@ -99,11 +99,66 @@ export class HttpService {
     });
   }
 
+  // 用户登录
   apiUserLogin(userInfoReq: UserInfoReq): Observable<FormatResponse> {
     return this.apiInstance('post', 'com/login', userInfoReq);
   }
 
+  // 查询地区集合
   apiAreaSet(): Observable<FormatResponse> {
-    return this.apiInstance('get', 'admin/area/listByVo', null, { type: 0 });
+    return this.apiInstance('get', 'admin/area/listByVo', null, {
+      type: 1,
+      pcode: '0',
+    });
+  }
+
+  // 销售日报可视化数据
+  apiSalesChart(
+    selectDate: string,
+    dateType: string,
+    area: string
+  ): Observable<FormatResponse> {
+    return this.apiInstance(
+      'get',
+      'admin/salesReport/reportSaleJournal',
+      null,
+      { selectDate, dateType, area }
+    );
+  }
+
+  // 试驾排名可视化数据
+  apiDriveChart(
+    selectDate: string,
+    dateType: string
+  ): Observable<FormatResponse> {
+    return this.apiInstance(
+      'get',
+      'admin/salesReport/reportStoreTestDriveRanking',
+      null,
+      { selectDate, dateType }
+    );
+  }
+
+  // 线索跟进可视化数据
+  apiClueFollowChart(
+    selectDate: string,
+    area: string
+  ): Observable<FormatResponse> {
+    return this.apiInstance(
+      'get',
+      'admin/salesReport/reportClueFollowing',
+      null,
+      { selectDate, area }
+    );
+  }
+
+  // 线索分发可视化数据
+  apiClueDistributionChart(selectDate: string): Observable<FormatResponse> {
+    return this.apiInstance(
+      'get',
+      'admin/salesReport/reportClueDestribute',
+      null,
+      { selectDate }
+    );
   }
 }

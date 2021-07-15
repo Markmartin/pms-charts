@@ -7,7 +7,6 @@ import {
 } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { GlobalxService } from '@/service/global/globalx.service';
 
 export class UniversalInterceptor implements HttpInterceptor {
   intercept(
