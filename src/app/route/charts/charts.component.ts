@@ -14,7 +14,7 @@ import { HttpService } from '@/service/request/http.service';
 })
 export class ChartsComponent implements OnInit {
   // 当前选择时间
-  date = dayjs().format('YYYY-MM');
+  date = dayjs().subtract(1, 'month').format('YYYY-MM');
   // 时间跨度选项
   dateOptions = [
     { viewValue: '月度', value: '0' },
@@ -88,9 +88,9 @@ export class ChartsComponent implements OnInit {
       source: [],
     },
     series: [
-      { name: '已跟踪', type: 'bar', stack: 'total' },
+      { name: '已跟踪线索', type: 'bar', stack: 'total' },
       {
-        name: '未跟踪',
+        name: '未跟踪线索',
         type: 'bar',
         stack: 'total',
         label: {
@@ -122,9 +122,9 @@ export class ChartsComponent implements OnInit {
       source: [],
     },
     series: [
-      { name: '已跟踪', type: 'bar', stack: 'total' },
+      { name: '已分发线索', type: 'bar', stack: 'total' },
       {
-        name: '未跟踪',
+        name: '未分发目标',
         type: 'bar',
         stack: 'total',
         label: {
@@ -233,9 +233,9 @@ export class ChartsComponent implements OnInit {
               lsCount: number;
             }) => ({
               partnerName: item.partnerName,
-              targetCount: item.targetCount || 5,
-              psCount: item.psCount || 3,
-              lsCount: item.lsCount || 2,
+              targetCount: item.targetCount,
+              psCount: item.psCount,
+              lsCount: item.lsCount,
             })
           );
 
@@ -261,7 +261,7 @@ export class ChartsComponent implements OnInit {
           const source = resp.data.map(
             (item: { partnerName: string; testDriveCount: number }) => ({
               partnerName: item.partnerName,
-              testDriveCount: item.testDriveCount || 10,
+              testDriveCount: item.testDriveCount,
             })
           );
 
@@ -292,9 +292,9 @@ export class ChartsComponent implements OnInit {
               percentage: number;
             }) => ({
               partnerName: item.partnerName,
-              clueCount: item.clueCount || 10,
-              unClueCount: item.unClueCount || 2,
-              percentage: item.percentage || 0,
+              clueCount: item.clueCount,
+              unClueCount: item.unClueCount - item.clueCount,
+              percentage: item.percentage,
             })
           );
 
@@ -323,9 +323,12 @@ export class ChartsComponent implements OnInit {
             percentage: number;
           }) => ({
             partnerName: item.partnerName,
-            clueCount: item.clueCount || 10,
-            unClueCount: item.unClueCount || 2,
-            percentage: item.percentage || 0,
+            clueCount: item.clueCount,
+            unClueCount:
+              item.unClueCount - item.clueCount > 0
+                ? item.unClueCount - item.clueCount
+                : 0,
+            percentage: item.percentage,
           })
         );
 
