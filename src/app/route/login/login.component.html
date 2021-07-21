@@ -6,10 +6,15 @@
   <div class="login-view">
     <div class="login-title">PMS - 数据可视化</div>
 
-    <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form class="form" [formGroup]="form" (ngSubmit)="throttleSubmit()">
       <mat-form-field class="form-field" appearance="outline">
         <mat-label>用户名 / UserName</mat-label>
-        <input matInput formControlName="userName" placeholder="请输入用户名" />
+        <input
+          matInput
+          formControlName="userName"
+          color="#fff"
+          placeholder="请输入用户名"
+        />
         <mat-error>
           {{ getErrorMessage("userName") }}
         </mat-error>

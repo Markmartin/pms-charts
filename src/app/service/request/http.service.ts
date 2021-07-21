@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   HttpClient,
   HttpResponse,
@@ -14,7 +15,7 @@ import {
   UserInfoReq,
 } from '@/service/request/http.interface';
 
-import { GlobalxService } from '@/service/global/globalx.service';
+// import { GlobalxService } from '@/service/global/globalx.service';
 
 // 请求成功数据处理
 function formatResponse(
@@ -42,6 +43,8 @@ function formatResponseError(error: HttpErrorResponse): FormatResponse {
   };
 }
 
+const unauthorized = [401, 1000];
+
 @Injectable({
   providedIn: 'root',
 })
@@ -49,7 +52,8 @@ export class HttpService {
   baseUrl = environment.baseUrl;
   constructor(
     private http: HttpClient,
-    private globalxService: GlobalxService,
+    private router: Router,
+    // private globalxService: GlobalxService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -83,6 +87,11 @@ export class HttpService {
                 verticalPosition: 'top',
                 duration: 2000,
               });
+              // 返回登录页面
+              if (unauthorized.includes(resp.body?.code || 200)) {
+                localStorage.clear();
+                this.router.navigate(['login']);
+              }
             }
             subscriber.next(response);
           },

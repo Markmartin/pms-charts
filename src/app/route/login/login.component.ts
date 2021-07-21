@@ -7,6 +7,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import * as _ from 'lodash';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpService } from '@/service/request/http.service';
@@ -43,6 +44,9 @@ export class LoginComponent implements OnInit {
       },
     ],
   });
+
+  throttleSubmit = _.throttle(this.onSubmit, 2000, { trailing: false });
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -51,7 +55,14 @@ export class LoginComponent implements OnInit {
     private globalx: GlobalxService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // const token = localStorage.getItem('token');
+    // const user = localStorage.getItem('user');
+    // if (token && user) {
+    //   this.globalx.setUserInfo(JSON.parse(user));
+    //   this.router.navigate(['charts']);
+    // }
+  }
 
   toggleHide(): void {
     this.hide = !this.hide;
@@ -75,6 +86,7 @@ export class LoginComponent implements OnInit {
     this.httpService.apiUserLogin(this.form.value).subscribe((resp) => {
       if (resp.status) {
         localStorage.setItem('token', resp.data.token);
+        localStorage.setItem('user', JSON.stringify(resp.data));
         this.globalx.setUserInfo(resp.data);
         this.router.navigate(['charts']);
       }

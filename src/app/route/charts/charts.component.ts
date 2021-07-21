@@ -28,6 +28,13 @@ export class ChartsComponent implements OnInit {
   salesBarChartOption = {
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
     legend: { data: ['目标', '批售', '零售'] },
+    grid: {
+      left: '3%',
+      right: '4%',
+      // top: '0%',
+      bottom: '3%',
+      containLabel: true,
+    },
     xAxis: {
       type: 'category',
       axisLabel: {
@@ -246,7 +253,12 @@ export class ChartsComponent implements OnInit {
               source,
             },
           };
-
+          const salesDom = document.getElementById('charts-sales');
+          if (salesDom) {
+            const width = 15 * source.length > 100 ? 15 * source.length : 100;
+            salesDom.style.width = `${width}vw`;
+          }
+          this.salesBarChart.resize();
           this.salesBarChart.setOption(this.salesBarChartOption);
         }
       });
@@ -273,6 +285,12 @@ export class ChartsComponent implements OnInit {
             },
           };
 
+          const driveDom = document.getElementById('charts-drive');
+          if (driveDom) {
+            const height = 15 * source.length > 100 ? 15 * source.length : 100;
+            driveDom.style.height = `${height}vw`;
+          }
+          this.driveBarChart.resize();
           this.driveBarChart.setOption(this.driveBarChartoption);
         }
       });
@@ -306,6 +324,12 @@ export class ChartsComponent implements OnInit {
             },
           };
 
+          const clueFollowDom = document.getElementById('charts-clue-follow');
+          if (clueFollowDom) {
+            const height = 10 * source.length > 100 ? 10 * source.length : 100;
+            clueFollowDom.style.height = `${height}vw`;
+          }
+          this.clueFollowBarChart.resize();
           this.clueFollowBarChart.setOption(this.clueFollowBarChartOption);
         }
       });
@@ -340,6 +364,14 @@ export class ChartsComponent implements OnInit {
           },
         };
 
+        const clueDistributeDom = document.getElementById(
+          'charts-clue-distribution'
+        );
+        if (clueDistributeDom) {
+          const height = 10 * source.length > 100 ? 10 * source.length : 100;
+          clueDistributeDom.style.height = `${height}vw`;
+        }
+        this.clueDistributionBarChart.resize();
         this.clueDistributionBarChart.setOption(
           this.clueDistributionChartOption
         );

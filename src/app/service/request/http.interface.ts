@@ -1,11 +1,11 @@
 export interface CommonResponse {
-  code: Number;
+  code: number;
   msg?: string;
   data: any;
 }
 
 export interface FormatResponse {
-  status: Boolean;
+  status: boolean;
   msg: string;
   data?: any;
 }
