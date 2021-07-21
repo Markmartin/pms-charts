@@ -160,6 +160,11 @@ export class ChartsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const metaThemeColor = document.querySelector('meta[name=theme-color]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', '#4352af');
+    }
+
     const salesDom = document.getElementById('charts-sales');
     if (salesDom) {
       this.salesBarChart = echarts.init(salesDom);

@@ -56,6 +56,11 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const metaThemeColor = document.querySelector('meta[name=theme-color]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', '#eeeeee');
+    }
+
     // const token = localStorage.getItem('token');
     // const user = localStorage.getItem('user');
     // if (token && user) {
