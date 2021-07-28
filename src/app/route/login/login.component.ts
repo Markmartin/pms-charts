@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpService } from '@/service/request/http.service';
 import { GlobalxService } from '@/service/global/globalx.service';
+import { Role } from '@/service/request/http.interface';
 
 function validateUserName(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -88,8 +89,30 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    const whiteRoles = [
+      'rolePartnerAdmin',
+      'rolePartnerManager',
+      'rolePartnerHandleVehicle',
+      'rolePartnerPlaner',
+      'rolePartnerSale',
+      'rolePartnerSaleManager',
+    ];
+
     this.httpService.apiUserLogin(this.form.value).subscribe((resp) => {
       if (resp.status) {
+        const { roleList } = resp.data.subMap;
+        console.log(roleList);
+        const permission = roleList.some((role: Role) =>
+          whiteRoles.includes(role.roleCode)
+        );
+        if (!permission) {
+          this.snackBar.open('暂无报表的访问权限', '', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 2000,
+          });
+          return;
+        }
         localStorage.setItem('token', resp.data.token);
         localStorage.setItem('user', JSON.stringify(resp.data));
         this.globalx.setUserInfo(resp.data);

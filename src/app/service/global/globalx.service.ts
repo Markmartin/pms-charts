@@ -13,6 +13,9 @@ export class GlobalxService {
     token: '',
     userId: '',
     accountNo: '',
+    subMap: {
+      roleList: [],
+    },
   };
   // Observable data sources
   private userInfoSubject = new Subject<UserInfo>();

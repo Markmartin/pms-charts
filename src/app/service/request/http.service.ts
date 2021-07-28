@@ -138,13 +138,14 @@ export class HttpService {
   // 试驾排名可视化数据
   apiDriveChart(
     selectDate: string,
-    dateType: string
+    dateType: string,
+    area: string
   ): Observable<FormatResponse> {
     return this.apiInstance(
       'get',
       'admin/salesReport/reportStoreTestDriveRanking',
       null,
-      { selectDate, dateType }
+      { selectDate, dateType, area }
     );
   }
 

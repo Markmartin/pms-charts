@@ -1,4 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  //   报表页面自定义tooltip全局样式
+  .charts {
+    .clue-distribution-tooltip {
+      .tooltip-label {
+        font-size: 14px;
+        color: #666;
+        font-weight: 400;
+        line-height: 1;
+      }
+
+      .tooltip-series-row:nth-child(2) {
+        margin-top: 10px;
+      }
+
+      .tooltip-series-row {
+        .tooltip-series-row-label {
+          font-size: 14px;
+          color: #666;
+          font-weight: 400;
+          margin-left: 2px;
+        }
+
+        .tooltip-series-row-value {
+          float: right;
+          margin-left: 20px;
+          font-size: 14px;
+          color: #666;
+          font-weight: 900;
+        }
+      }
+    }
+  }
+}

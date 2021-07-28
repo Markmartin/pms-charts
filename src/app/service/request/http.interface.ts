@@ -23,12 +23,15 @@ export interface UserInfo {
   userCode: string;
   token: string;
   userId: string;
-
   accountNo: string;
-  // userId: string;
-  // userId: string;
-  // userId: string;
-  // userId: string;
-  // userId: string;
-  // userId: string;
+  subMap: {
+    roleList: Array<Role>;
+  };
+}
+
+export interface Role {
+  roleCode: string;
+  roleName: string;
+  roleId: string;
+  roleUserId: string;
 }

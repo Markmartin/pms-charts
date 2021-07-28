@@ -114,7 +114,26 @@ export class ChartsComponent implements OnInit {
   // 线索分发
   clueDistributionBarChart!: EChartsType;
   clueDistributionChartOption = {
-    tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      className: 'clue-distribution-tooltip',
+      formatter: (params: any) => {
+        return `
+        <div class="tooltip-label">${params[0].axisValueLabel}</div>
+        <div class="tooltip-series-row">
+          ${params[0].marker} 
+          <span class="tooltip-series-row-label">${params[0].seriesName}</span>
+          <span class="tooltip-series-row-value">${params[0].value.clueCount}</span>
+        </div>
+        <div class="tooltip-series-row">
+          ${params[1].marker} 
+          <span class="tooltip-series-row-label">${params[1].seriesName}</span>
+          <span class="tooltip-series-row-value">${params[1].value.targetClueCount}</span>
+        </div>`;
+        // return params[0].marker;
+      },
+    },
     grid: {
       left: '3%',
       right: '10%',
@@ -131,7 +150,7 @@ export class ChartsComponent implements OnInit {
     series: [
       { name: '已分发线索', type: 'bar', stack: 'total' },
       {
-        name: '未分发目标',
+        name: '线索目标',
         type: 'bar',
         stack: 'total',
         label: {
@@ -149,6 +168,7 @@ export class ChartsComponent implements OnInit {
     salesTimeSpan: ['0'],
     salesArea: [''],
     driveTimeSpan: ['0'],
+    driveArea: [''],
     clueFollowArea: [''],
   });
 
@@ -272,7 +292,11 @@ export class ChartsComponent implements OnInit {
   // 更新试驾排名
   updateDriveChart() {
     this.httpService
-      .apiDriveChart(this.date, this.form.value.driveTimeSpan)
+      .apiDriveChart(
+        this.date,
+        this.form.value.driveTimeSpan,
+        this.form.value.driveArea
+      )
       .subscribe((resp) => {
         if (resp.status) {
           const source = resp.data.map(
@@ -292,7 +316,8 @@ export class ChartsComponent implements OnInit {
 
           const driveDom = document.getElementById('charts-drive');
           if (driveDom) {
-            const height = 15 * source.length > 100 ? 15 * source.length : 100;
+            // const height = 15 * source.length > 100 ? 15 * source.length : 100;
+            const height = 15 * source.length;
             driveDom.style.height = `${height}vw`;
           }
           this.driveBarChart.resize();
@@ -331,7 +356,8 @@ export class ChartsComponent implements OnInit {
 
           const clueFollowDom = document.getElementById('charts-clue-follow');
           if (clueFollowDom) {
-            const height = 10 * source.length > 100 ? 10 * source.length : 100;
+            // const height = 15 * source.length > 100 ? 15 * source.length : 100;
+            const height = 15 * source.length;
             clueFollowDom.style.height = `${height}vw`;
           }
           this.clueFollowBarChart.resize();
@@ -348,11 +374,13 @@ export class ChartsComponent implements OnInit {
           (item: {
             partnerName: string;
             clueCount: number;
+            targetClueCount: number;
             unClueCount: number;
             percentage: number;
           }) => ({
             partnerName: item.partnerName,
             clueCount: item.clueCount,
+            targetClueCount: item.unClueCount,
             unClueCount:
               item.unClueCount - item.clueCount > 0
                 ? item.unClueCount - item.clueCount
@@ -373,7 +401,8 @@ export class ChartsComponent implements OnInit {
           'charts-clue-distribution'
         );
         if (clueDistributeDom) {
-          const height = 10 * source.length > 100 ? 10 * source.length : 100;
+          // const height = 15 * source.length > 100 ? 15 * source.length : 100;
+          const height = 15 * source.length;
           clueDistributeDom.style.height = `${height}vw`;
         }
         this.clueDistributionBarChart.resize();

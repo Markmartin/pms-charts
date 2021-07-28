@@ -48,6 +48,15 @@
               {{ option.viewValue }}
             </option>
           </select>
+          <select
+            class="select-custom"
+            formControlName="driveArea"
+            (ngModelChange)="updateDriveChart()"
+          >
+            <option *ngFor="let option of areaOptions" [value]="option.value">
+              {{ option.viewValue }}
+            </option>
+          </select>
         </div>
 
         <!-- 图表dom -->
