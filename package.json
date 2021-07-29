@@ -6,7 +6,8 @@
     "start": "ng serve",
     "serve": "ng serve --host 0.0.0.0",
     "stage": "ng serve --configuration stage",
-    "build": "ng build",
+    "build:pre": "ng build --base-href /pms-admin/data/ --configuration stage --aot",
+    "build": "ng build --base-href /pms-admin/data/ --configuration production --aot",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

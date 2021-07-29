@@ -3,7 +3,8 @@ import dayjs from 'dayjs';
 import * as echarts from 'echarts';
 import { EChartsType } from 'echarts';
 import { FormBuilder } from '@angular/forms';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
+import debounce from 'lodash/debounce';
 
 import { HttpService } from '@/service/request/http.service';
 
@@ -172,7 +173,8 @@ export class ChartsComponent implements OnInit {
     clueFollowArea: [''],
   });
 
-  debounceUpdateAllCharts = _.debounce(this.updateAllCharts, 1500);
+  // debounceUpdateAllCharts = _.debounce(this.updateAllCharts, 1500);
+  debounceUpdateAllCharts = debounce(this.updateAllCharts, 1500);
 
   constructor(
     private formBuilder: FormBuilder,

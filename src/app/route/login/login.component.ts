@@ -7,7 +7,8 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
+import throttle from 'lodash/throttle';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpService } from '@/service/request/http.service';
@@ -46,7 +47,8 @@ export class LoginComponent implements OnInit {
     ],
   });
 
-  throttleSubmit = _.throttle(this.onSubmit, 2000, { trailing: false });
+  // throttleSubmit = _.throttle(this.onSubmit, 2000, { trailing: false });
+  throttleSubmit = throttle(this.onSubmit, 2000, { trailing: false });
 
   constructor(
     private router: Router,
